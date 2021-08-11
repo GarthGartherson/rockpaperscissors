@@ -1,82 +1,88 @@
-// let playerChoice = document.querySelector('.player-choice');
-// let computerChoice = document.querySelector('.computer-choice');
-let result = document.querySelector('.result');
-let resetButton = document.querySelector('#reset')
+const playerChoice = document.querySelector('.player-choice');
+const computerChoice = document.querySelector('.computer-choice');
+const computerScoreboard = document.querySelector('.computer-score')
+const playerScoreboard = document.querySelector('.player-score')
+const rock = document.querySelector('.rock');
+const paper = document.querySelector('.paper');
+const scissors = document.querySelector('.scissors');
+const result = document.querySelector('.result');
+const startButton = document.querySelector('.start-game')
+let resetButton = document.querySelector('.reset-game')
+const playerOptions = document.querySelectorAll('.button-choice')
 let playerScore=0;
 let computerScore=0;
 
+resetButton.addEventListener('click', () => {
+    playerScore = 0;
+    computerScore = 0;
+    result.innerText = ''
+    computerScoreboard.innerText = ''
+    playerScoreboard.innerText = ''
+    playerChoice.innerText = ''
+    computerChoice.innerText = ''
+})
 
+function playRound(playerPrompt){
+    const choiceArray = ['rock', 'paper', 'scissors'];
+    let computerRandom = choiceArray[(Math.floor(Math.random() * 3))];   
 
-function playRound(playerPrompt, computerRandom){
-    console.log(`Computer chooses: ${computerRandom} you chose ${playerPrompt}`)
+    if(computerScore === 5){
+        result.innerText = ('Computer Wins!')
+        return;
+    }
+    
+    if(playerScore === 5){
+        result.innerText = ('Player Wins!')
+        return;
+    } 
+
+    playerChoice.innerText = playerPrompt
+    computerChoice.innerText = computerRandom
+
     if(playerPrompt === 'rock' && computerRandom === 'paper'){
         result.innerText = 'YOU LOSE'
         computerScore += 1;
+        computerScoreboard.innerText = computerScore
     } else if (playerPrompt === 'rock' && computerRandom === 'scissors'){
         result.innerText = 'YOU WIN';
         playerScore += 1;
+        playerScoreboard.innerText = playerScore;
     } else if (playerPrompt === 'rock' && computerRandom === 'rock'){
         result.innerText = 'YOU TIE'
     }
     if(playerPrompt === 'scissors' && computerRandom === 'rock'){
         result.innerText = 'YOU LOSE'
-        computerScore += 1
+        computerScore += 1;
+        computerScoreboard.innerText = computerScore
     } else if (playerPrompt === 'scissors' && computerRandom === 'paper'){
         result.innerText = 'YOU WIN';
         playerScore += 1;
+        playerScoreboard.innerText = playerScore;
     } else if (playerPrompt === 'scissors' && computerRandom === 'scissors'){
         result.innerText = 'YOU TIE'
     }
     if(playerPrompt === 'paper' && computerRandom === 'scissors'){
         result.innerText = 'YOU LOSE'
-        computerScore += 1
+        computerScore += 1;
+        computerScoreboard.innerText = computerScore
     } else if (playerPrompt === 'paper' && computerRandom === 'rock'){
         result.innerText = 'YOU WIN';
         playerScore += 1;
+        playerScoreboard.innerText = playerScore;
     } else if (playerPrompt === 'paper' && computerRandom === 'paper'){
         result.innerText = 'YOU TIE'
     }
 }
 
-function getPrompt(){
-    const choiceArray = ['rock', 'paper', 'scissors', 'Rock', 'Paper', 'Scissors'];
-    const playerPrompt = prompt('Rock Paper Scissors?').toLowerCase();
-    while(choiceArray.includes(playerPrompt) === false){
-        playerPrompt = prompt('Rock Paper Scissors?').toLowerCase();
-    }
-    console.log(playerPrompt)
-    return playerPrompt;
-}
-
-function getRandom(){
-    const choiceArray = ['rock', 'paper', 'scissors', 'Rock', 'Paper', 'Scissors']
-    return computerRandom = choiceArray[(Math.floor(Math.random() * 3))]
-}
-
 function playGame(){
-    let playerPrompt = prompt('Rock Paper Scissors?').toLowerCase();
-    const choiceArray = ['rock', 'paper', 'scissors'];
-    let computerRandom = choiceArray[(Math.floor(Math.random() * 3))];    
-    while(playerScore <5 && computerScore < 5){
-        playRound(playerPrompt, computerRandom);
-        console.log(`Player: ${playerScore}`);
-        console.log(`Computer: ${computerScore}`);
-        playerPrompt = getPrompt();
-        computerRandom = getRandom();
-    }
-    if(computerScore === 5){
-        console.log('Computer Wins!')
-    } else {
-        console.log('Player Wins!')
-    }
+    console.log(playerScore)
+
+    playerOptions.forEach(button => {
+        button.addEventListener('click', function() {
+            playRound(button.innerText.toLowerCase())
+        }
+    
+    )})
 }
 
-playGame();
-
-// resetButton.addEventListener('click', () => {
-//     result.innerText = '';
-//     computerChoice.innerText = '';
-//     playerChoice.innerText = ''
-//     let playerScore = 0;
-//     let computerScore = 0;
-// })
+startButton.addEventListener('click', playGame)
